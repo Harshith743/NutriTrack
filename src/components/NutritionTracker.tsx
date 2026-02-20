@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { cn } from "@/utils/cn";
 import { Activity, Calendar as CalendarIcon, Loader2 } from "lucide-react";
 import { AddMealForm } from "./AddMealForm";
@@ -106,8 +105,8 @@ export default function NutritionTracker() {
             {/* Header & Navigation */}
             <header className="flex flex-col md:flex-row items-center justify-between mb-8 gap-6 pt-8">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center shadow-[0_0_20px_rgba(157,80,187,0.6)] overflow-hidden border border-electric/40">
-                        <Image src="/logo.png" alt="NutriTrack Logo" width={40} height={40} className="object-cover" />
+                    <div className="w-10 h-10 rounded-full bg-electric flex items-center justify-center shadow-[0_0_20px_rgba(157,80,187,0.6)]">
+                        <span className="text-white font-bold text-xl tracking-tighter">N</span>
                     </div>
                     <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-md">
                         Nutri<span className="text-electric">Track</span>
