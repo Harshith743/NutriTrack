@@ -119,7 +119,7 @@ export function AddMealForm({ onAdd }: { onAdd: (meal: any) => void }) {
                                     value={item.ingredient}
                                     onChange={(e) => handleItemChange(index, 'ingredient', e.target.value)}
                                     placeholder="e.g. Chicken breast"
-                                    className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-electric focus:ring-1 focus:ring-electric transition-all placeholder:text-slate-600"
+                                    className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-[16px] sm:text-sm text-white focus:outline-none focus:border-electric focus:ring-1 focus:ring-electric transition-all placeholder:text-slate-600"
                                     autoComplete="off"
                                 />
                             </div>
@@ -134,7 +134,7 @@ export function AddMealForm({ onAdd }: { onAdd: (meal: any) => void }) {
                                         value={item.quantity || ""}
                                         onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
                                         placeholder="100"
-                                        className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-electric focus:ring-1 focus:ring-electric transition-all placeholder:text-slate-600"
+                                        className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-[16px] sm:text-sm text-white focus:outline-none focus:border-electric focus:ring-1 focus:ring-electric transition-all placeholder:text-slate-600"
                                     />
                                 </div>
 

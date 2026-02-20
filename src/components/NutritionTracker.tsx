@@ -118,7 +118,7 @@ export default function NutritionTracker() {
                     <button
                         onClick={() => setActiveTab("dashboard")}
                         className={cn(
-                            "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300",
+                            "flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300",
                             activeTab === "dashboard"
                                 ? "bg-electric/20 text-electric neon-border shadow-md"
                                 : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -130,7 +130,7 @@ export default function NutritionTracker() {
                     <button
                         onClick={() => setActiveTab("history")}
                         className={cn(
-                            "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300",
+                            "flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300",
                             activeTab === "history"
                                 ? "bg-electric/20 text-electric neon-border shadow-md"
                                 : "text-slate-400 hover:text-white hover:bg-white/5"

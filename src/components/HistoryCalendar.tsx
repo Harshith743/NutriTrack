@@ -104,7 +104,7 @@ export function HistoryCalendar({ history, onDelete }: { history: MealEntry[], o
             </div>
 
             {/* Details Section */}
-            <div className={`glass-card md:w-[350px] transition-all duration-500 flex flex-col items-center justify-center ${selectedDate ? 'opacity-100' : 'opacity-50'}`}>
+            <div className={`glass-card w-full md:w-[350px] transition-all duration-500 flex flex-col items-center justify-center ${selectedDate ? 'opacity-100' : 'opacity-50'}`}>
                 {!selectedDate ? (
                     <div className="text-slate-500 text-center text-sm flex flex-col items-center gap-3">
                         <Calendar size={32} className="opacity-50" />
