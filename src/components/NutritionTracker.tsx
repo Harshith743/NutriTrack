@@ -153,8 +153,8 @@ export default function NutritionTracker() {
                         {/* Dashboard View */}
                         <div
                             className={cn(
-                                "transition-all duration-500 ease-in-out absolute w-full",
-                                activeTab === "dashboard" ? "opacity-100 translate-y-0 z-10" : "opacity-0 translate-y-4 pointer-events-none -z-10"
+                                "w-full",
+                                activeTab === "dashboard" ? "block animate-in fade-in zoom-in duration-500" : "hidden"
                             )}
                         >
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
@@ -211,8 +211,8 @@ export default function NutritionTracker() {
                         {/* History View */}
                         <div
                             className={cn(
-                                "transition-all duration-500 ease-in-out absolute w-full",
-                                activeTab === "history" ? "opacity-100 translate-y-0 z-10" : "opacity-0 translate-y-4 pointer-events-none -z-10"
+                                "w-full",
+                                activeTab === "history" ? "block animate-in fade-in zoom-in duration-500" : "hidden"
                             )}
                         >
                             <HistoryCalendar history={history} onDelete={handleDeleteMeal} />
