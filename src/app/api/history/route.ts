@@ -1,66 +1,45 @@
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
-
-// Define the absolute path to ensure we write to the project root.
-const dataFilePath = path.join(process.cwd(), 'nutrihistory.json');
-
-// Ensure the file exists, if not create an empty array.
-async function initFile() {
-    try {
-        await fs.access(dataFilePath);
-    } catch {
-        await fs.writeFile(dataFilePath, JSON.stringify([]), 'utf8');
-    }
-}
+import { db } from '@/utils/firebaseAdmin';
 
 export async function GET() {
-    await initFile();
     try {
-        const data = await fs.readFile(dataFilePath, 'utf8');
-        return NextResponse.json(JSON.parse(data));
+        const snapshot = await db.ref('meals').once('value');
+        const data = snapshot.val();
+
+        // Firebase returns an object of objects, we need an array for the frontend
+        const historyArray = data ? Object.values(data) : [];
+
+        return NextResponse.json(historyArray);
     } catch (error) {
-        console.error("Failed to read history:", error);
+        console.error("Failed to read history from Firebase:", error);
         return NextResponse.json({ error: 'Failed to read history data' }, { status: 500 });
     }
 }
 
 export async function POST(request: Request) {
-    await initFile();
     try {
         const newEntry = await request.json();
-        const data = await fs.readFile(dataFilePath, 'utf8');
-        const history = JSON.parse(data);
 
-        // Add the new entry to the array
-        history.push(newEntry);
-
-        // Write back to file
-        await fs.writeFile(dataFilePath, JSON.stringify(history, null, 2), 'utf8');
+        // Use the entry ID as the Firebase key
+        await db.ref(`meals/${newEntry.id}`).set(newEntry);
 
         return NextResponse.json({ success: true, entry: newEntry });
     } catch (error) {
-        console.error("Failed to write history:", error);
+        console.error("Failed to write history to Firebase:", error);
         return NextResponse.json({ error: 'Failed to write history data' }, { status: 500 });
     }
 }
 
 export async function DELETE(request: Request) {
-    await initFile();
     try {
         const { id } = await request.json();
-        const data = await fs.readFile(dataFilePath, 'utf8');
-        const history: any[] = JSON.parse(data);
 
-        // Filter out the deleted entry
-        const updatedHistory = history.filter(entry => entry.id !== id);
-
-        // Write back to file
-        await fs.writeFile(dataFilePath, JSON.stringify(updatedHistory, null, 2), 'utf8');
+        // Remove the specific meal from Firebase
+        await db.ref(`meals/${id}`).remove();
 
         return NextResponse.json({ success: true, deletedId: id });
     } catch (error) {
-        console.error("Failed to delete history item:", error);
+        console.error("Failed to delete history item from Firebase:", error);
         return NextResponse.json({ error: 'Failed to delete history data' }, { status: 500 });
     }
 }
