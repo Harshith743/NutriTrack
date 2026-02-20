@@ -148,7 +148,7 @@ export function HistoryCalendar({ history, onDelete }: { history: MealEntry[], o
                                         <div key={entry.id} className="flex flex-col gap-2 p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
                                             <div className="flex justify-between items-start w-full">
                                                 <div className="flex flex-col">
-                                                    {entry.items.map((item, i) => (
+                                                    {(entry.items || [{ ingredient: entry.ingredient || 'Unknown', quantity: entry.quantity || 0 }]).map((item, i) => (
                                                         <div key={i} className="flex items-center gap-2">
                                                             <span className="text-white font-medium text-sm capitalize">{item.ingredient}</span>
                                                             <span className="text-slate-400 text-xs">({item.quantity}g)</span>

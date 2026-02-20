@@ -175,7 +175,7 @@ export default function NutritionTracker() {
                                                         <div key={entry.id} className="flex flex-col p-3 rounded-lg bg-white/5 border border-white/5 group">
                                                             <div className="flex justify-between items-start">
                                                                 <div className="flex flex-col flex-1">
-                                                                    {entry.items.map((item, i) => (
+                                                                    {(entry.items || [{ ingredient: entry.ingredient || 'Unknown', quantity: entry.quantity || 0 }]).map((item, i) => (
                                                                         <span key={i} className="text-white font-medium text-sm capitalize">
                                                                             {item.ingredient} <span className="text-slate-400 font-normal text-xs">({item.quantity}g)</span>
                                                                         </span>
