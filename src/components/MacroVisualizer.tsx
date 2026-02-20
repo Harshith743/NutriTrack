@@ -55,7 +55,7 @@ export function MacroVisualizer({ currentMacros }: { currentMacros: Macros }) {
                                 color: '#fff'
                             }}
                             itemStyle={{ color: '#fff' }}
-                            formatter={(value: number) => [`${value}g`, "Amount"]}
+                            formatter={(value: any) => [`${value}g`, "Amount"]}
                         />
                     </PieChart>
                 </ResponsiveContainer>
