@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NutriTrack
+
+NutriTrack is a high-end, modern Web App for nutrition tracking. It features a Cyber-Noir aesthetic, a dual-tab interface for logging and reviewing meals, and robust local data persistence.
+
+## Features
+
+- **Cyber-Noir Aesthetic**: Deep Obsidian, Electric Purple, and Muted Slate colors with glassmorphism effects.
+- **Dashboard View**: 
+  - Log meals quickly with Ingredient Name and Quantity.
+  - Dynamic Pie Chart visualizing daily Protein, Carbohydrates, Fiber, and Fats.
+  - Progress bars tracking daily goals (2000 kcal, 150g Protein, 35g Fiber).
+- **History View**: 
+  - Sleek calendar interface.
+  - Click on past dates to view logged meals and macro breakdowns.
+- **Local Data Persistence**: 
+  - All logs are directly saved to and retrieved from a local `nutrihistory.json` file on your machine.
 
 ## Getting Started
 
-First, run the development server:
+This project is built with Next.js, React, Tailwind CSS, and Recharts.
+
+First, install the dependencies if you haven't already:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How it Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The application utilizes Next.js API Routes (`src/app/api/history/route.ts`) to read and write directly to `nutrihistory.json` in the root of the project directory. This ensures your data is saved locally on your machine without relying on temporary browser storage or external databases.
