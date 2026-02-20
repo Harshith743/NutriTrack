@@ -5,7 +5,7 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, subMont
 import { ChevronLeft, ChevronRight, X, Calendar } from "lucide-react";
 import { MealEntry } from "@/utils/macros";
 
-export function HistoryCalendar({ history }: { history: MealEntry[] }) {
+export function HistoryCalendar({ history, onDelete }: { history: MealEntry[], onDelete?: (id: string) => void }) {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -145,14 +145,29 @@ export function HistoryCalendar({ history }: { history: MealEntry[] }) {
                                 <div className="flex flex-col gap-3 w-full pr-2">
                                     <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Entries</h4>
                                     {selectedEntries.map(entry => (
-                                        <div key={entry.id} className="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                                            <div className="flex flex-col">
-                                                <span className="text-white font-medium text-sm capitalize">{entry.ingredient}</span>
-                                                <span className="text-slate-400 text-xs">{entry.quantity}g</span>
-                                            </div>
-                                            <div className="text-right flex flex-col">
-                                                <span className="text-electric text-sm font-bold">{entry.macros.kcal} <span className="text-xs font-normal">kcal</span></span>
-                                                <span className="text-slate-500 text-[10px]">{format(new Date(entry.timestamp), "h:mm a")}</span>
+                                        <div key={entry.id} className="flex flex-col gap-2 p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
+                                            <div className="flex justify-between items-start w-full">
+                                                <div className="flex flex-col">
+                                                    {entry.items.map((item, i) => (
+                                                        <div key={i} className="flex items-center gap-2">
+                                                            <span className="text-white font-medium text-sm capitalize">{item.ingredient}</span>
+                                                            <span className="text-slate-400 text-xs">({item.quantity}g)</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="text-right flex flex-col items-end gap-1">
+                                                    <span className="text-electric text-sm font-bold">{entry.macros.kcal} <span className="text-xs font-normal">kcal</span></span>
+                                                    <span className="text-slate-500 text-[10px]">{format(new Date(entry.timestamp), "h:mm a")}</span>
+
+                                                    {onDelete && (
+                                                        <button
+                                                            onClick={() => onDelete(entry.id)}
+                                                            className="text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 text-[10px] mt-1"
+                                                        >
+                                                            <X size={12} /> Delete
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     ))}

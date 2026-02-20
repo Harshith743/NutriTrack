@@ -64,9 +64,32 @@ export default function NutritionTracker() {
             });
             if (!res.ok) {
                 console.error("Failed to save meal");
+                // Optionally revert optimistic update here on fail
             }
         } catch (error) {
             console.error("Error saving to local storage file", error);
+        }
+    };
+
+    const handleDeleteMeal = async (id: string) => {
+        // Optimistic UI Update
+        const previousHistory = [...history];
+        setHistory(prev => prev.filter(entry => entry.id !== id));
+
+        // Delete from local JSON via API route
+        try {
+            const res = await fetch("/api/history", {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id }),
+            });
+            if (!res.ok) {
+                console.error("Failed to delete meal");
+                setHistory(previousHistory); // Revert optimistic update
+            }
+        } catch (error) {
+            console.error("Error deleting from local storage file", error);
+            setHistory(previousHistory); // Revert optimistic update
         }
     };
 
@@ -136,9 +159,44 @@ export default function NutritionTracker() {
                                 <div className="md:col-span-1 border border-white/10 rounded-2xl p-0.5 shadow-lg bg-gradient-to-br from-white/10 to-transparent">
                                     <GoalsProgress currentMacros={currentMacros} />
                                 </div>
-                                {/* Form Input spanning full width beneath */}
+                                {/* Form Input and Recent Logs spanning full width beneath */}
                                 <div className="md:col-span-3">
-                                    <AddMealForm onAdd={handleAddMeal} />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                                        <AddMealForm onAdd={handleAddMeal} />
+
+                                        {/* Recent Meals for Today */}
+                                        <div className="glass-card flex flex-col gap-4">
+                                            <h2 className="text-xl font-semibold text-white mb-2">Today's Logs</h2>
+                                            {todayEntries.length === 0 ? (
+                                                <p className="text-slate-400 text-sm italic">No meals logged yet today.</p>
+                                            ) : (
+                                                <div className="flex flex-col gap-2 overflow-y-auto max-h-[350px] pr-2">
+                                                    {todayEntries.slice().reverse().map(entry => (
+                                                        <div key={entry.id} className="flex flex-col p-3 rounded-lg bg-white/5 border border-white/5 group">
+                                                            <div className="flex justify-between items-start">
+                                                                <div className="flex flex-col flex-1">
+                                                                    {entry.items.map((item, i) => (
+                                                                        <span key={i} className="text-white font-medium text-sm capitalize">
+                                                                            {item.ingredient} <span className="text-slate-400 font-normal text-xs">({item.quantity}g)</span>
+                                                                        </span>
+                                                                    ))}
+                                                                </div>
+                                                                <div className="flex flex-col items-end shrink-0">
+                                                                    <span className="text-electric text-sm font-bold">{entry.macros.kcal} kcal</span>
+                                                                    <button
+                                                                        onClick={() => handleDeleteMeal(entry.id)}
+                                                                        className="text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-opacity text-xs mt-1 underline"
+                                                                    >
+                                                                        Undo / Delete
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +208,7 @@ export default function NutritionTracker() {
                                 activeTab === "history" ? "opacity-100 translate-y-0 z-10" : "opacity-0 translate-y-4 pointer-events-none -z-10"
                             )}
                         >
-                            <HistoryCalendar history={history} />
+                            <HistoryCalendar history={history} onDelete={handleDeleteMeal} />
                         </div>
                     </>
                 )}

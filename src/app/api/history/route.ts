@@ -44,3 +44,23 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Failed to write history data' }, { status: 500 });
     }
 }
+
+export async function DELETE(request: Request) {
+    await initFile();
+    try {
+        const { id } = await request.json();
+        const data = await fs.readFile(dataFilePath, 'utf8');
+        const history: any[] = JSON.parse(data);
+
+        // Filter out the deleted entry
+        const updatedHistory = history.filter(entry => entry.id !== id);
+
+        // Write back to file
+        await fs.writeFile(dataFilePath, JSON.stringify(updatedHistory, null, 2), 'utf8');
+
+        return NextResponse.json({ success: true, deletedId: id });
+    } catch (error) {
+        console.error("Failed to delete history item:", error);
+        return NextResponse.json({ error: 'Failed to delete history data' }, { status: 500 });
+    }
+}

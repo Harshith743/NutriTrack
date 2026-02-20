@@ -8,11 +8,15 @@ export interface Macros {
     kcal: number;
 }
 
+export interface MealItem {
+    ingredient: string;
+    quantity: number;
+}
+
 export interface MealEntry {
     id: string;
     timestamp: string;
-    ingredient: string;
-    quantity: number;
+    items: MealItem[];
     macros: Macros;
 }
 
@@ -30,24 +34,23 @@ const MACRO_DATABASE: Record<string, Macros> = {
     beef: { kcal: 250, protein: 26, carbs: 0, fats: 15, fiber: 0 },
 };
 
-export function calculateMacros(ingredient: string, quantityGrams: number): Macros | null {
-    const normalizedIngredient = ingredient.toLowerCase().trim();
+export function calculateMacros(items: MealItem[]): Macros {
+    return items.reduce((acc, item) => {
+        const normalizedIngredient = item.ingredient.toLowerCase().trim();
+        const key = Object.keys(MACRO_DATABASE).find((k) =>
+            normalizedIngredient.includes(k) || k.includes(normalizedIngredient)
+        );
 
-    // Find ingredient (simple loose matching for the mock)
-    const key = Object.keys(MACRO_DATABASE).find((k) =>
-        normalizedIngredient.includes(k) || k.includes(normalizedIngredient)
-    );
+        if (key) {
+            const baseMacros = MACRO_DATABASE[key];
+            const multiplier = item.quantity / 100;
+            acc.protein += baseMacros.protein * multiplier;
+            acc.carbs += baseMacros.carbs * multiplier;
+            acc.fiber += baseMacros.fiber * multiplier;
+            acc.fats += baseMacros.fats * multiplier;
+            acc.kcal += baseMacros.kcal * multiplier;
+        }
 
-    if (!key) return null;
-
-    const baseMacros = MACRO_DATABASE[key];
-    const multiplier = quantityGrams / 100;
-
-    return {
-        protein: Number((baseMacros.protein * multiplier).toFixed(1)),
-        carbs: Number((baseMacros.carbs * multiplier).toFixed(1)),
-        fiber: Number((baseMacros.fiber * multiplier).toFixed(1)),
-        fats: Number((baseMacros.fats * multiplier).toFixed(1)),
-        kcal: Number((baseMacros.kcal * multiplier).toFixed(0)),
-    };
+        return acc;
+    }, { protein: 0, carbs: 0, fiber: 0, fats: 0, kcal: 0 });
 }
