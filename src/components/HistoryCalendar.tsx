@@ -32,6 +32,13 @@ export function HistoryCalendar({ history, onDelete }: { history: MealEntry[], o
         { protein: 0, carbs: 0, fiber: 0, fats: 0, kcal: 0 }
     );
 
+    // Round accumulated macros to 1 decimal place
+    selectedMacros.protein = Math.round(selectedMacros.protein * 10) / 10;
+    selectedMacros.carbs = Math.round(selectedMacros.carbs * 10) / 10;
+    selectedMacros.fiber = Math.round(selectedMacros.fiber * 10) / 10;
+    selectedMacros.fats = Math.round(selectedMacros.fats * 10) / 10;
+    selectedMacros.kcal = Math.round(selectedMacros.kcal * 10) / 10;
+
     return (
         <div className="flex flex-col md:flex-row gap-6 w-full h-full">
             {/* Calendar Section */}

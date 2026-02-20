@@ -51,6 +51,13 @@ export default function NutritionTracker() {
         { protein: 0, carbs: 0, fiber: 0, fats: 0, kcal: 0 }
     );
 
+    // Round accumulated macros to 1 decimal place
+    currentMacros.protein = Math.round(currentMacros.protein * 10) / 10;
+    currentMacros.carbs = Math.round(currentMacros.carbs * 10) / 10;
+    currentMacros.fiber = Math.round(currentMacros.fiber * 10) / 10;
+    currentMacros.fats = Math.round(currentMacros.fats * 10) / 10;
+    currentMacros.kcal = Math.round(currentMacros.kcal * 10) / 10;
+
     const handleAddMeal = async (newMeal: MealEntry) => {
         // Optimistic UI Update
         setHistory(prev => [...prev, newMeal]);
